@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useCallback } from "react";
+import axios from 'axios'
 
 const url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=";
 const AppContext = React.createContext();
@@ -12,9 +13,8 @@ const AppProvider = ({ children }) => {
   const fetchDrinks = useCallback( async () => {
     setLoading(true);
     try {
-      const resp = await fetch(`${url}${searchTerm}`);
-      const data = await resp.json();
-      const { drinks } = data;
+      const resp = await axios.get(`${url}${searchTerm}`);
+      const { drinks } = resp.data;
       if (drinks) {
         const newCocktails = drinks.map((item) => {
           const { idDrink, strDrink, strDrinkThumb, strAlcoholic, strGlass } =
